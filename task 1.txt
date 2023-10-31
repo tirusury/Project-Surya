@@ -1,0 +1,67 @@
+-- Task 1 --
+-- 1.Database creation --
+
+CREATE TABLE if not exists studentinfo (STU_ID INT PRIMARY KEY,
+STU_NAME VARCHAR(255),
+DOB DATE,
+Phone_no numeric(10),
+email VARCHAR(255),
+address VARCHAR(255));
+
+CREATE TABLE if not exists Coursesinfo (Course_ID INT PRIMARY KEY,
+Course_NAME VARCHAR(255),
+Course_instructor VARCHAR(255));
+
+CREATE TABLE if not exists enrollmentinfo (Enrollment_ID INT PRIMARY KEY,
+stu_ID INT,
+course_ID INT,
+foreign key (stu_ID) references studentinfo(stu_id),
+foreign key (course_id) references coursesinfo(course_id)
+);
+
+-- 2. Data Creation --
+
+INSERT INTO studentinfo (STU_ID, STU_NAME, DOB, PHONE_NO, EMAIL, ADDRESS) VALUES
+(1, 'ALI', '1990-01-26', 8888888888, 'ALI@GMAIL.COM', 'WHITEFIELD, BENGALURU'),
+(2, 'RAM', '1990-08-15', 999999999, 'RAM@GMAIL.COM', 'CHEMBUR, MUMBAI'),
+(3, 'JOHN', '1990-11-01', 7777777777, 'JOHN@GMAIL.COM', 'KODAMBAKAM, CHENNAI');
+
+INSERT INTO coursesinfo (COURSE_ID, COURSE_NAME, COURSE_INSTRUCTOR) VALUES
+(101, 'SQL', 'SHAWN'),
+(202, 'PYTHON', 'PANKAJ'),
+(303, 'JAVA', 'DAN');
+
+INSERT INTO ENROLLMENTINFO (ENROLLMENT_ID, STU_ID, COURSE_ID) VALUES
+(111, '1', '101'),
+(222, '2', '202'),
+(333, '3', '303');
+
+-- 3.Retrive student info --
+
+select s.stu_name as StudentName,
+s.Phone_no as PhoneNumber,
+s.email AS EMAIL,
+s.address as Address,
+e.enrollment_ID as EnrollmentID,
+e.course_ID as CourseID
+from studentinfo s join enrollmentinfo e ON s.stu_id = e.stu_id;
+
+-- B. QUERY TO RETRIVE COURSE ID OF A SPECIFC STUDENT 
+SELECT E.COURSE_ID FROM ENROLLMENTINFO E
+JOIN studentinfo S ON E.STU_ID = S.STU_ID
+WHERE S.STU_NAME = 'RAM';
+
+-- C. RETRIEVE COURSE INFO --
+
+SELECT c.course_ID as CourseID, C.COURSE_NAME AS CourseName, c.course_instructor as InstructorName from coursesinfo C;
+
+-- d. query to retrive course info of specific course --
+select course_name, course_instructor, course_id from coursesinfo
+where course_name = 'Python';
+
+select * from coursesinfo;
+
+-- e. query to retrive course info of multiple course --
+select course_name, course_instructor, course_id from coursesinfo
+where course_name IN ('JAVA','SQL');
+
