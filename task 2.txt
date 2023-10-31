@@ -1,0 +1,118 @@
+
+##Create a table named Student_table
+
+create table Student_Table(
+student_ID int, primary key(student_ID),
+Stu_name text, 
+Department text, 
+Email_ID text, 
+Phone_no numeric, 
+Address text, 
+Date_of_birth date, 
+Gender text,
+Major text,
+GPA numeric,
+Grade text);
+
+##Insert values into created tables
+
+Insert into student_table values 
+(001,'A1','AA','a1@amazon.com',1111111111,'Bangalore', '11-27-1992','M','AAA',4,'E'),
+(002,'B1','AA','b1@amazon.com',2222222222,'Chennai', '07-28-1992','M','MMM',4.5,'D'),
+(003,'C1','BB','c1@amazon.com',3333333333,'Chennai', '07-28-1992','M','MMM',5,'C'),
+(004,'D1','CC','d1@amazon.com',4444444444,'Chennai', '07-28-1992','M','MMM',5.5,'C'),
+(005,'E1','EE','e1@amazon.com',5555555555,'Chennai', '07-28-1992','M','MMM',7,'B'),
+(006,'F1','BB','f1@amazon.com',6666666666,'Chennai', '07-28-1992','M','MMM',7.5,'B'),
+(007,'G1','DD','g1@amazon.com',7777777777,'Chennai', '07-28-1992','M','MMM',8,'A'),
+(008,'H1','DD','h1@amazon.com',8888888888,'Chennai', '07-28-1992','M','MMM',8.2,'A'),
+(009,'I1','FF','i1@amazon.com',9999999999,'Chennai', '07-28-1992','M','MMM',8.7,'A'),
+(010,'J1','FF','j1@amazon.com',1212121212,'Chennai', '07-28-1992','M','MMM',9,'A');
+
+## Query to retrieve student information and sort based on descending grade
+
+select * from student_table
+order by Grade DESC;
+
+## Query to retrieve male students
+
+Select * from student_table
+where gender='M';
+
+## Query to retrieve students with GPA less than 5.0
+
+select * from student_table
+where gpa<5.0;
+
+## Query to update student email and grade
+
+update student_table set email_id='raju@amazon.com',grade='E' where stu_name='Raj';
+
+## Query to retrieve name and age of all students who have grade 'B'
+
+Select stu_name, Age(now(),date_of_birth)as age from student_table where grade='B';
+
+## Grouping and Calculation
+
+Select department,gender,AVG(gpa) as average_gpa from student_table
+group by department,gender;
+
+## Table Renaming
+
+Alter table student_table rename to student_info;
+
+## Retrieving max gpa
+
+select stu_name from student_info where gpa=(select max(gpa)from student_info);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Insert into student_table values 
+(001,'saravana','AA','vzsar@amazon.com',8973772165,'Bangalore', '06-07-1994','M','AAA',8.2,'A'),
+(002,'Kumar','AA','kumar@amazon.com',9873772165,'Chennai', '07-28-1992','M','MMM',8.2,'B'),
+(003,'Ravi','BB','ravi@amazon.com',6773882165,'Chennai', '07-28-1992','M','MMM',8.2,'C'),
+(004,'Raj','CC','raj@amazon.com',9073723165,'Chennai', '07-28-1992','M','MMM',8.2,'E'),
+(005,'Siva','EE','siva@amazon.com',6773778165,'Chennai', '07-28-1992','M','MMM',8.2,'D'),
+(006,'Manoj','BB','manoj@amazon.com',8873232165,'Chennai', '07-28-1992','M','MMM',8.2,'D'),
+(007,'Anbu','DD','anbu@amazon.com',9973777865,'Chennai', '07-28-1992','M','MMM',8.2,'B'),
+(008,'Jayanthi','DD','jayanthi@amazon.com',9073723165,'Chennai', '07-28-1992','M','MMM',8.2,'C'),
+(009,'Anwesha','FF','anwesha@amazon.com',9823772165,'Chennai', '07-28-1992','M','MMM',8.2,'A'),
+(010,'Aisha','FF','aisha@amazon.com',9973782165,'Chennai', '07-28-1992','M','MMM',8.2,'E');
+select * from student_table;
+
+

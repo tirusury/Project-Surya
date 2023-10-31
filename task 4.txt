@@ -1,0 +1,58 @@
+-- Data Creation --
+
+CREATE TABLE sales_sample (
+    Product_Id INT,
+    Region VARCHAR(50),
+    Date DATE,
+    Sales_Amount NUMERIC
+);
+
+INSERT INTO sales_sample (Product_Id, Region, Date, Sales_Amount)
+VALUES
+    (1, 'East', '2023-01-01', 1000),
+    (2, 'West', '2023-01-01', 750),
+    (1, 'North', '2023-01-02', 1250),
+    (3, 'South', '2023-01-02', 600),
+    (2, 'East', '2023-01-02', 850),
+    (3, 'West', '2023-01-02', 1100),
+    (1, 'North', '2023-01-03', 950),
+    (2, 'South', '2023-01-03', 1150),
+    (3, 'East', '2023-01-03', 700),
+    (1, 'West', '2023-01-03', 1020);
+
+-- Perform OLAP operations --
+
+-- Drill Down to Analyze sales data at a more detailed level (Region to Product) --
+
+SELECT Region, Product_Id, Date, SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+GROUP BY Region, Product_Id, Date
+ORDER BY Region, Product_Id, Date;
+
+-- Rollup, Summarize sales data at different levels of granularity (Product to Region) --
+
+SELECT Product_Id, Region, SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+GROUP BY Product_Id, Region
+ORDER BY Product_Id, Region;
+
+Cube: Analyze sales data from multiple dimensions (Product, Region, Date).
+SELECT Product_Id, Region, Date, SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+GROUP BY CUBE (Product_Id, Region, Date)
+ORDER BY Product_Id, Region, Date;
+
+-- Slice --
+
+SELECT Region, Date, SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+WHERE Region = 'East'
+GROUP BY Region, Date
+ORDER BY Date;
+
+-- Dice --
+SELECT Product_Id, Region, Date, SUM(Sales_Amount) AS Total_Sales
+FROM sales_sample
+WHERE (Product_Id = 1 OR Product_Id = 2) AND (Region = 'East' OR Region = 'West')
+GROUP BY Product_Id, Region, Date
+ORDER BY Product_Id, Region, Date;
