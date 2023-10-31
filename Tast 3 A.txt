@@ -1,0 +1,121 @@
+-- Table: public.Events
+
+-- DROP TABLE IF EXISTS public."Events";
+
+CREATE TABLE IF NOT EXISTS public."Events"
+(
+    "Event_id" numeric NOT NULL,
+    "Event_name" text COLLATE pg_catalog."default",
+    event_date date,
+    "Event_location" text COLLATE pg_catalog."default",
+    "Event_description" text COLLATE pg_catalog."default",
+    CONSTRAINT "Events_pkey" PRIMARY KEY ("Event_id")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Events"
+    OWNER to postgres;
+
+
+-- Table: public.Attendees
+
+-- DROP TABLE IF EXISTS public."Attendees";
+
+CREATE TABLE IF NOT EXISTS public."Attendees"
+(
+    "Attendee_ID" numeric NOT NULL,
+    attendee_name text COLLATE pg_catalog."default",
+    "Attendee_phone" numeric(10,0),
+    "Attendee_email" text COLLATE pg_catalog."default",
+    "Attendee_city" text COLLATE pg_catalog."default",
+    CONSTRAINT "Attendees_pkey" PRIMARY KEY ("Attendee_ID")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Attendees"
+    OWNER to postgres;
+
+-- Table: public.Registrations
+
+-- DROP TABLE IF EXISTS public."Registrations";
+
+CREATE TABLE IF NOT EXISTS public."Registrations"
+(
+    "Registration_id" numeric NOT NULL,
+    event_id numeric,
+    "Attendee_id" numeric,
+    "Registration_date" date,
+    "Registration_amount" numeric,
+    CONSTRAINT "Registrations_pkey" PRIMARY KEY ("Registration_id")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Registrations"
+    OWNER to postgres;
+
+
+-- Inserting values into events_table
+
+insert into events_table values (001,'MotoGP','2023-11-12','Delhi','1000 cc'),
+(002,'Moto2','2023-11-12','Delhi','600 cc'),
+(003,'Moto3','2023-10-15','Delhi','250 cc'),
+(004,'F1','2023-11-03','Hyderabad','Formula1'),
+(005,'MotoE','2023-12-30','Hyderabad','Moto Electric');
+
+-- Inserting values into attendees_table
+
+insert into "Attendees" values (001,'A1','1111111111','a1@amazon.com','Bengaluru'),
+(002,'B1','2222222222','b1@amazon.com','Delhi'),
+(003,'C1','3333333333','c1@amazon.com','Hyderabad'),
+(004,'D1','4444444444','d1@amazon.com','Goa'),
+(005,'E1','5555555555','e1@amazon.com','Chennai');
+
+-- Inserting values into Registration_table
+
+insert into registration_table values (001,001,001,'2023-10-29','5000'),
+(002,002,002,'2023-10-30','5000'),
+(003,003,003,'2023-11-05','7000'),
+(004,004,004,'2023-11-15','6000'),
+(005,005,005,'2023-12-06','6000');
+
+-- Inserting a new event
+
+insert into events_table(Event_id,Event_name,Event_date,Event_location,Event_description) values 
+('006','NASCAR','2023-11-12','Torronto','Oval circuit');
+
+-- Update existing event
+
+Update events_table set event_name='F1 Bharath' where Event_id='004';
+
+-- Delete existing event
+
+delete from events_table where Event_id='006';
+
+##Query to insert new attendees
+
+insert into attendees_table (Attendee_id,Attendee_name,Attendee_phone,Attendee_email,Attendee_city) values 
+(006,'F1','6666666666','f1@amazon.com','Mumbai');
+
+##Register attendee for an event
+
+insert into registration_table (Registration_id,Event_id,Attendee_id,Registration_date,Registration_amount) values 
+(006,005,006,'2023-12-05','4000');
+
+-- Query to retrieve event information
+
+Select * from events_table;
+
+-- Query to generate attendee lists
+
+Select attendee_name from attendees_table;
+
+-- Query to calculate event attendance statistics
+
+Select e.event_id, e.event_name, 
+count(a.attendee_id) as Total_attendance,
+FROM events e LEFT JOIN event_attendance a ON e.event_ID = a.event_ID
+Group by e.event_id, e.event_name
+order by e.event_id;
